@@ -23,6 +23,7 @@ type Submission struct {
 	gorm.Model
 	QuestionId      string `json:"questionId"`
 	Title           string `json:"title"`
+	Difficulty      string `json:"difficulty"`
 	TranslatedTitle string `json:"translatedTitle"`
 	TitleSlug       string `json:"titleSlug"`
 	Status          string `json:"status"`

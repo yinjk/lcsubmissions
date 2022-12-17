@@ -20,7 +20,7 @@ var (
 	submissionReqJson = `{
     "operationName": "recentSubmissions",
     "variables": {"userSlug":"%s"},
-    "query": "query recentSubmissions($userSlug: String!){recentSubmissions(userSlug: $userSlug){status lang question{questionFrontendId title translatedTitle titleSlug __typename}submitTime __typename}}"
+    "query": "query recentSubmissions($userSlug: String!){recentSubmissions(userSlug: $userSlug){status lang question{questionFrontendId title difficulty translatedTitle titleSlug __typename}submitTime __typename}}"
 }`
 )
 var syncTime time.Time
@@ -30,7 +30,7 @@ func GetLatestSyncTime() string {
 }
 
 func StartRefreshSubmissions(users [][]string, interval time.Duration) {
-	RefreshSubmissions(users)
+	//RefreshSubmissions(users)
 	ticker := time.NewTicker(interval)
 	go func() {
 		for {
@@ -91,6 +91,7 @@ func GetUserSubmissions(lcId string) ([]models.Submission, error) {
 			LCId:            lcId,
 			QuestionId:      submission.Question.QuestionFrontendId,
 			Title:           submission.Question.Title,
+			Difficulty:      submission.Question.Difficulty,
 			TranslatedTitle: submission.Question.TranslatedTitle,
 			TitleSlug:       submission.Question.TitleSlug,
 			Status:          submission.Status,
@@ -109,6 +110,7 @@ type SubmissionRes struct {
 			Question struct {
 				QuestionFrontendId string `json:"questionFrontendId"`
 				Title              string `json:"title"`
+				Difficulty         string `json:"difficulty"`
 				TranslatedTitle    string `json:"translatedTitle"`
 				TitleSlug          string `json:"titleSlug"`
 				Typename           string `json:"__typename"`
